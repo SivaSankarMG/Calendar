@@ -1,12 +1,18 @@
-
-
-
 FYear = 2022
-a = 0
 
-def start ():
+def is_leap_year(year):
+    return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
     
-    if ( UYear > FYear):
+def count_leap_years(start_year, end_year):
+    leap_years = 0
+    for i in range(start_year, end_year):
+        if is_leap_year(i):
+            leap_years += 1
+    return leap_years
+
+def calculate_days(UYear, FYear, month):
+    # Implement the month-to-days logic
+    if ( UYear >= FYear):
 
         if month=='JAN':
             days = 0
@@ -32,35 +38,7 @@ def start ():
             days = 304
         else :
             days = 334
-
-        for i in range (FYear , UYear ,1):
-            if ( i%4 == 0 ):
-                global a
-                a+=1
-
-
-        TDays = (UYear - FYear) * 365 + days + a
-        REM = (TDays % 7) + 1
-
-
-        if REM == 1 :
-            SDay = 'SAT'
-        elif REM == 2 :
-            SDay = 'SUN'
-        elif REM == 3 :
-            SDay = 'MON'
-        elif REM == 4 :
-            SDay = 'TUE'
-        elif REM == 5 :
-            SDay = 'WED'
-        elif REM == 6 :
-            SDay = 'THU'
-        else :
-            SDay = 'FRI'
-
-        
     else:
-
         if month=='JAN':
             days = 0
         elif month=='FEB':
@@ -85,16 +63,27 @@ def start ():
             days = 61
         else :
             days = 31
+    return days
+    
 
-        for i in range (UYear , FYear ,1):
-            if ( i%4 == 0 ):
-                a+=1
-
-
-        TDays = ((FYear - UYear)-1) * 365 + days + a
-        REM = (TDays % 7) + 1
-
-
+def get_start_day(FYear, UYear,REM):
+    # Map REM to the correct starting day
+    if UYear >= FYear:
+        if REM == 1 :
+            SDay = 'SAT'
+        elif REM == 2 :
+            SDay = 'SUN'
+        elif REM == 3 :
+            SDay = 'MON'
+        elif REM == 4 :
+            SDay = 'TUE'
+        elif REM == 5 :
+            SDay = 'WED'
+        elif REM == 6 :
+            SDay = 'THU'
+        else :
+            SDay = 'FRI'
+    else:    
         if REM == 1 :
             SDay = 'SAT'
         elif REM == 2 :
@@ -109,8 +98,10 @@ def start ():
             SDay = 'MON'
         else :
             SDay = 'SUN'
+    return SDay
 
-
+        
+def print_calendar(month, UYear, SDay):
     if month=='JAN':
             b = 1
     elif month=='FEB':
@@ -160,7 +151,7 @@ def start ():
             print (end='\n')
             print ('29','  30')
         if month == 'FEB':
-            if UYear % 4 ==0 :
+            if is_leap_year(Uyear):
                 print ('22','  23','  24','  25','  26','  27','  28')
                 print (end='\n')
                 print ('29')
@@ -187,7 +178,7 @@ def start ():
             print (end='\n')
             print ('28','  29','  30')
         if month == 'FEB':
-            if UYear % 4 ==0 :
+            if is_leap_year(Uyear):
                 print ('21','  22','  23','  24','  25','  26','  27')
                 print (end='\n')
                 print ('28','  29')
@@ -216,7 +207,7 @@ def start ():
             print (end='\n')
             print ('27','  28','  29','  30')
         if month == 'FEB':
-            if UYear % 4 ==0 :
+            if is_leap_year(Uyear):
                 print ('20','  21','  22','  23','  24','  25','  26')
                 print (end='\n')
                 print ('27','  28','  29')
@@ -242,7 +233,7 @@ def start ():
         if (b==2):
             print ('26','  27','  28','  29','  30')
         if month == 'FEB':
-            if UYear % 4 ==0 :
+            if is_leap_year(Uyear):
                 print ('26','  27','  28','  29')
             else:
                 print ('26','  27','  28')
@@ -264,7 +255,7 @@ def start ():
         if (b==2):
             print ('25','  26','  27','  28','  29','  30')
         if month == 'FEB':
-            if UYear % 4 ==0 :
+            if is_leap_year(Uyear):
                 print ('25','  26','  27','  28','  29')
             else:
                 print ('25','  26','  27','  28')
@@ -288,7 +279,7 @@ def start ():
         if (b==2):
             print ('24','  25','  26','  27','  28','  29','  30')
         if month == 'FEB':
-            if UYear % 4 ==0 :
+            if is_leap_year(Uyear):
                 print ('24','  25','  26','  27','  28','  29')
             else:
                 print ('24','  25','  26','  27','  28')
@@ -314,26 +305,36 @@ def start ():
             print (end='\n')
             print ('30')
         if month == 'FEB':
-            if UYear % 4 ==0 :
+            if is_leap_year(Uyear):
                 print ('23','  24','  25','  26','  27','  28','  29')
             else:
                 print ('23','  24','  25','  26','  27','  28')
     
 
 
-d = input ("If you need a particular month - type 'YES' else type 'NO' : ")
+def start (FYear, UYear, month):
 
-if d == 'YES'  :
+    days = calculate_days(UYear, FYear, month)
+    leap_years = count_leap_years(FYear, UYear)
+    TDays = (UYear - FYear) * 365 + days + leap_years
+    REM = (TDays % 7) + 1
+    SDay = get_start_day(REM)
+    print_calendar(month, UYear, SDay)
+
+
+d = input ("If you need a particular month - type 'YES' else type 'NO' : ").lower()
+
+if d == 'yes'  :
     month = input( " Please enter the month in capital letters with only 3 letters [eg JAN] : " )
     UYear = int(input( " Please enter the year : " ))
-    start()
+    start(FYear, UYear, month)
    
 else:
     UYear = int(input( " Please enter the year : " ))
     c = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC']
     for j in range (0,12,1):
         month = c[j]
-        start()
+        start(FYear, UYear, month)
        
     
     
